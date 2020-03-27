@@ -1,0 +1,23 @@
+version: '2'
+services:
+  samplepost-app:
+    image: samplepost
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATA_MONGODB_URI=mongodb://samplepost-mongodb:27017
+      - SPRING_DATA_MONGODB_DATABASE=samplepost
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://samplepost-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://samplepost-elasticsearch:9200
+    ports:
+      - 8080:8080
+  samplepost-mongodb:
+    extends:
+      file: mongodb.yml
+      service: samplepost-mongodb
+  samplepost-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: samplepost-elasticsearch
